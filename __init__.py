@@ -106,6 +106,20 @@ class MLEngineTrainingOperatorV2(BaseOperator):
         creation request will be issued.
     :type mode: str
     """
+    template_fields = [
+        '_project_id',
+        '_job_id',
+        '_package_uris',
+        '_training_python_module',
+        '_training_args',
+        '_region',
+        '_scale_tier',
+        '_master_type',
+        '_master_image_uri',
+        '_runtime_version',
+        '_python_version',
+        '_job_dir'
+    ]
 
     @apply_defaults
     def __init__(self,
