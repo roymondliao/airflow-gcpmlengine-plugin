@@ -106,6 +106,7 @@ class MLEngineTrainingOperatorV2(BaseOperator):
         creation request will be issued.
     :type mode: str
     """
+
     template_fields = [
         '_project_id',
         '_job_id',
@@ -120,7 +121,7 @@ class MLEngineTrainingOperatorV2(BaseOperator):
         '_python_version',
         '_job_dir'
     ]
-
+    
     @apply_defaults
     def __init__(self,
                  project_id,
@@ -135,6 +136,7 @@ class MLEngineTrainingOperatorV2(BaseOperator):
                  runtime_version=None,
                  python_version=None,
                  job_dir=None,
+                 service_account=None,
                  gcp_conn_id='google_cloud_default',
                  delegate_to=None,
                  mode='PRODUCTION',
@@ -153,6 +155,7 @@ class MLEngineTrainingOperatorV2(BaseOperator):
         self._runtime_version = runtime_version
         self._python_version = python_version
         self._job_dir = job_dir
+        self._service_account = service_account
         self._gcp_conn_id = gcp_conn_id
         self._delegate_to = delegate_to
         self._mode = mode
@@ -186,7 +189,7 @@ class MLEngineTrainingOperatorV2(BaseOperator):
                 'packageUris': self._package_uris,
                 'pythonModule': self._training_python_module,
                 'region': self._region,
-                'args': self._training_args
+                'args': self._training_args,
             }
         }
 
@@ -202,6 +205,9 @@ class MLEngineTrainingOperatorV2(BaseOperator):
 
         if self._job_dir:
             training_request['trainingInput']['jobDir'] = self._job_dir
+
+        if self._service_account:
+            training_request['trainingInput']['serviceAccount'] = self._service_account
 
         if self._scale_tier is not None and self._scale_tier.upper() == "CUSTOM":
             training_request['trainingInput']['masterType'] = self._master_type
