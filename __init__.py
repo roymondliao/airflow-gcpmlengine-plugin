@@ -119,7 +119,8 @@ class MLEngineTrainingOperatorV2(BaseOperator):
         '_master_image_uri',
         '_runtime_version',
         '_python_version',
-        '_job_dir'
+        '_job_dir',
+        '_service_account'
     ]
     
     @apply_defaults
